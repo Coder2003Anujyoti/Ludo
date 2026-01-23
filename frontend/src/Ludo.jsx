@@ -1,7 +1,7 @@
 import { useEffect, useState,useRef} from "react";
 import { FaPaperPlane } from "react-icons/fa";
 import { io } from "socket.io-client";
-const socket = io("http://localhost:8000");
+const socket = io("https://ludo-18tl.onrender.com");
 function Ludo() {
   const [message, setMessage] = useState("");
   const [loading,setLoading]=useState("")
