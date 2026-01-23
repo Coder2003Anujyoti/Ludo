@@ -16,6 +16,7 @@ function Ludo() {
  const inactivityTimeout = useRef(null);
 const countdownInterval = useRef(null);
 const [timer, setTimer] = useState(20);
+const [rolllock,setRolllock]=useState(false)
 const triggerInactivity = () => {
     setLoading('Connection issues...');
     socket.disconnect()
@@ -43,7 +44,7 @@ const triggerInactivity = () => {
 const rolldice = (name) => {
   if (name === data.players[0].name) {
     if (rollingfirst) return;
-
+    setRolllock(true)
     setRollingfirst(true);
     let finalUserValue = 1; // store last rolling value
     const userInterval = setInterval(() => {
@@ -59,14 +60,14 @@ const rolldice = (name) => {
       socket.emit("round-done", { name, move: finalUserValue });
       setFirstval(finalUserValue);
       setRollingfirst(false);
-      setChoice("Opposition Turn");
+      //setRolllock(false)
     }, 1000);
 
   } else {
     if (rollingsecond) return;
 
     setRollingsecond(true);
-  
+    setRolllock(true)
     let finalUserValue = 1; // store last rolling value
     const userInterval = setInterval(() => {
       const k = Math.floor(Math.random() * 6) + 1;
@@ -81,7 +82,7 @@ const rolldice = (name) => {
       socket.emit("round-done", { name, move: finalUserValue });
       setSecondval(finalUserValue);
       setRollingsecond(false);
-      setChoice("Opposition Turn");
+      //setChoice("Opposition Turn");
     }, 1000);
   }
 };
@@ -147,6 +148,7 @@ setFirstval(msg.players[0].move || 1)
 setSecondval(msg.players[1].move || 1)
 setRollingfirst(false)
 setRollingsecond(false)
+setRolllock(false)
 setData(msg)
 })
 return () => {
@@ -264,7 +266,7 @@ className="w-10 h-9.5" />
 </div>
 {
 choice=="Opposition Turn" && <p className="font-bold my-6 text-white">Opposition Turn</p>}
-{ choice=="Your Turn" && ((name == data.players[0].name && rollingfirst == false) || (name == data.players[1].name && rollingsecond == false)) && <>
+{ choice=="Your Turn" && rolllock == false && ((name == data.players[0].name && rollingfirst == false) || (name == data.players[1].name && rollingsecond == false)) && <>
 <div className="w-full gap-8 my-3 flex flex-row justify-center flex-wrap items-center">
 <button onClick={()=>{
 socket.emit("start-roll",{name})
