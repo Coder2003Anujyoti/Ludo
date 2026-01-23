@@ -245,7 +245,7 @@ className="w-10 h-9.5" />
 { data && data.players[0].position!=63 && data.players[1].position!=63 && <>
 <div className="flex gap-8 w-full justify-center items-center text-white my-2">
 <div className="flex flex-col items-center">
-<span className="text-lg font-semibold mb-2">{data.players[0].name}</span>
+<span className="text-lg font-bold mb-2">{data.players[0].name}</span>
 <div className="w-full flex items-center justify-center">
 <img src={data.players[0].image} className="w-12 h-12 rounded-md transition duration-300 ease-in-out transform hover:scale-105" />
 </div>
@@ -254,7 +254,7 @@ className="w-10 h-9.5" />
 </div>
 </div>
 <div className="flex flex-col items-center">
-<span className="text-lg font-semibold mb-2">{data.players[1].name}</span>
+<span className="text-lg font-bold mb-2">{data.players[1].name}</span>
 <div className="w-full flex items-center justify-center">
 <img src={data.players[1].image} className="w-12 h-12 rounded-md transition duration-300 ease-in-out transform hover:scale-105" />
  </div>
