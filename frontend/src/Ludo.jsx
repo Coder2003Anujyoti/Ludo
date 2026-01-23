@@ -45,7 +45,7 @@ const rolldice = (name) => {
     if (rollingfirst) return;
 
     setRollingfirst(true);
-    setChoice("Opposition Turn");
+   // setChoice("Opposition Turn");
 
     let finalUserValue = 1; // store last rolling value
     const userInterval = setInterval(() => {
@@ -67,7 +67,7 @@ const rolldice = (name) => {
     if (rollingsecond) return;
 
     setRollingsecond(true);
-    setChoice("Opposition Turn");
+   // setChoice("Opposition Turn");
 
     let finalUserValue = 1; // store last rolling value
     const userInterval = setInterval(() => {
@@ -196,7 +196,7 @@ document.body.classList.add("bg-gray-900");
  }
  </div>
  </>}
- { choice=="Your Turn" && data.game.result=='' && loading=="" && <h2 className="text-center font-bold text-white my-2">
+ { choice=="Your Turn" && data.game.result=='' && loading=="" &&  ((name == data.players[0].name && rollingfirst == false) || (name == data.players[1].name && rollingsecond == false))  && <h2 className="text-center font-bold text-white my-2">
   You have {timer} seconds to choose!
 </h2>}
  { data && loading=="" && <>
@@ -265,7 +265,7 @@ className="w-10 h-9.5" />
 </div>
 {
 choice=="Opposition Turn" && <p className="font-bold my-6 text-white">Opposition Turn</p>}
-{ choice=="Your Turn" && <>
+{ choice=="Your Turn" && ((name == data.players[0].name && rollingfirst == false) || (name == data.players[1].name && rollingsecond == false)) && <>
 <div className="w-full gap-8 my-3 flex flex-row justify-center flex-wrap items-center">
 <button onClick={()=>{
 socket.emit("start-roll",{name})
