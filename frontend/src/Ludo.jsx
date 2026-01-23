@@ -40,40 +40,52 @@ const triggerInactivity = () => {
     });
   }, 1000);
 };
- const rolldice = (name) => {
- if(name == data.players[0].name){
+const rolldice = (name) => {
+  if (name === data.players[0].name) {
     if (rollingfirst) return;
-    setRollingfirst(true)
-    setChoice("Opposition Turn")
+
+    setRollingfirst(true);
+    setChoice("Opposition Turn");
+
+    let finalUserValue = 1; // store last rolling value
     const userInterval = setInterval(() => {
-    let k=Math.floor(Math.random() * 6) + 1
+      const k = Math.floor(Math.random() * 6) + 1;
+      finalUserValue = k; // update last value
       setFirstval(k);
-    },100);
+    }, 100);
+
     setTimeout(() => {
       clearInterval(userInterval);
-     let  finalUserValue = Math.floor(Math.random() * 6) + 1;
-  socket.emit("round-done",{name,move:finalUserValue})
+
+      // use the last value from rolling
+      socket.emit("round-done", { name, move: finalUserValue });
       setFirstval(finalUserValue);
-      setRollingfirst(false)
-    },1000)
-  }
-else{
-      if (rollingsecond) return;
-    setRollingsecond(true)
-    setChoice("Opposition Turn")
+      setRollingfirst(false);
+    }, 1000);
+
+  } else {
+    if (rollingsecond) return;
+
+    setRollingsecond(true);
+    setChoice("Opposition Turn");
+
+    let finalUserValue = 1; // store last rolling value
     const userInterval = setInterval(() => {
-    let k=Math.floor(Math.random() * 6) + 1
+      const k = Math.floor(Math.random() * 6) + 1;
+      finalUserValue = k; // update last value
       setSecondval(k);
     }, 100);
+
     setTimeout(() => {
       clearInterval(userInterval);
-      let finalUserValue = Math.floor(Math.random() * 6) + 1;
-    socket.emit("round-done",{name,move:finalUserValue})
+
+      // use the last value from rolling
+      socket.emit("round-done", { name, move: finalUserValue });
       setSecondval(finalUserValue);
-      setRollingsecond(false)
-    },1000)
-}
-    }
+      setRollingsecond(false);
+    }, 1000);
+  }
+};
 useEffect(() => {
   if (!rollingfirst || choice !== "Opposition Turn") return;
 
