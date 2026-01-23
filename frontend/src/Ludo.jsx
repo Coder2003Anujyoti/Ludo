@@ -45,8 +45,6 @@ const rolldice = (name) => {
     if (rollingfirst) return;
 
     setRollingfirst(true);
-   // setChoice("Opposition Turn");
-
     let finalUserValue = 1; // store last rolling value
     const userInterval = setInterval(() => {
       const k = Math.floor(Math.random() * 6) + 1;
@@ -61,14 +59,14 @@ const rolldice = (name) => {
       socket.emit("round-done", { name, move: finalUserValue });
       setFirstval(finalUserValue);
       setRollingfirst(false);
+      setChoice("Opposition Turn");
     }, 1000);
 
   } else {
     if (rollingsecond) return;
 
     setRollingsecond(true);
-   // setChoice("Opposition Turn");
-
+  
     let finalUserValue = 1; // store last rolling value
     const userInterval = setInterval(() => {
       const k = Math.floor(Math.random() * 6) + 1;
@@ -83,6 +81,7 @@ const rolldice = (name) => {
       socket.emit("round-done", { name, move: finalUserValue });
       setSecondval(finalUserValue);
       setRollingsecond(false);
+      setChoice("Opposition Turn");
     }, 1000);
   }
 };
