@@ -197,7 +197,7 @@ document.body.classList.add("bg-gray-900");
  }
  </div>
  </>}
- { choice=="Your Turn" && data.game.result=='' && loading=="" &&  ((name == data.players[0].name && rollingfirst == false) || (name == data.players[1].name && rollingsecond == false))  && <h2 className="text-center font-bold text-white my-2">
+ { choice=="Your Turn" && data.game.result=='' && loading=="" && rolllock == false && ((name == data.players[0].name && rollingfirst == false) || (name == data.players[1].name && rollingsecond == false))  && <h2 className="text-center font-bold text-white my-2">
   You have {timer} seconds to choose!
 </h2>}
  { data && loading=="" && <>
