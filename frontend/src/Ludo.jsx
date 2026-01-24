@@ -59,8 +59,6 @@ const rolldice = (name) => {
       // use the last value from rolling
       socket.emit("round-done", { name, move: finalUserValue });
       setFirstval(finalUserValue);
-      setRollingfirst(false);
-      //setRolllock(false)
     }, 1000);
 
   } else {
@@ -81,8 +79,6 @@ const rolldice = (name) => {
       // use the last value from rolling
       socket.emit("round-done", { name, move: finalUserValue });
       setSecondval(finalUserValue);
-      setRollingsecond(false);
-      //setChoice("Opposition Turn");
     }, 1000);
   }
 };
@@ -197,7 +193,8 @@ document.body.classList.add("bg-gray-900");
  }
  </div>
  </>}
- { choice=="Your Turn" && data.game.result=='' && loading=="" && rolllock == false && ((name == data.players[0].name && rollingfirst == false) || (name == data.players[1].name && rollingsecond == false))  && <h2 className="text-center font-bold text-white my-2">
+ { choice=="Your Turn" && data.game.result=='' && loading=="" && rolllock == false &&
+  <h2 className="text-center font-bold text-white my-2">
   You have {timer} seconds to choose!
 </h2>}
  { data && loading=="" && <>
@@ -251,7 +248,7 @@ className="w-10 h-9.5" />
 <img src={data.players[0].image} className="w-12 h-12 rounded-md transition duration-300 ease-in-out transform hover:scale-105" />
 </div>
 <div className={`w-24 h-24 my-3 bg-white text-black text-4xl font-bold flex items-center justify-center rounded-lg shadow-md transition-transform duration-300 ${rollingfirst ? 'animate-spin' : ''}`}>
-{firstval}
+{rollingfirst == true ? firstval : (data.players[0].move == 0) ? 1 : data.players[0].move}
 </div>
 </div>
 <div className="flex flex-col items-center">
@@ -260,13 +257,13 @@ className="w-10 h-9.5" />
 <img src={data.players[1].image} className="w-12 h-12 rounded-md transition duration-300 ease-in-out transform hover:scale-105" />
  </div>
 <div className={`w-24 h-24 my-3 bg-white text-black text-4xl font-bold flex items-center justify-center rounded-lg shadow-md transition-transform duration-300 ${rollingsecond ? 'animate-spin' : ''}`}>
-{secondval}
+{rollingsecond == true ? secondval : (data.players[1].move == 0) ? 1 : data.players[1].move}
 </div>
 </div>
 </div>
 {
 choice=="Opposition Turn" && <p className="font-bold my-6 text-white">Opposition Turn</p>}
-{ choice=="Your Turn" && rolllock == false && ((name == data.players[0].name && rollingfirst == false) || (name == data.players[1].name && rollingsecond == false)) && <>
+{ choice=="Your Turn" && rolllock == false && <>
 <div className="w-full gap-8 my-3 flex flex-row justify-center flex-wrap items-center">
 <button onClick={()=>{
 socket.emit("start-roll",{name})
