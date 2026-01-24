@@ -101,10 +101,12 @@ socket.on("start-game",(msg)=>{
 socket.on("choice-turn",(msg)=>{
 if(msg=="Your Turn"){
 setChoice(msg)
+setRolllock(false)
 resetInactivityTimer()
 }
 else{
 setChoice(msg)
+setRolllock(false)
 clearInterval(countdownInterval.current);
  clearTimeout(inactivityTimeout.current);
  setTimer(0)
@@ -127,6 +129,7 @@ socket.on("show-roll", (msg) => {
 });
 
 socket.on("result-round",(msg)=>{
+ clearInterval(opponentIntervalRef.current); 
 if(msg.game.result!=''){
   clearInterval(countdownInterval.current);
     clearTimeout(inactivityTimeout.current);
@@ -135,7 +138,6 @@ setFirstval(msg.players[0].move || 1)
 setSecondval(msg.players[1].move || 1)
 setRollingfirst(false)
 setRollingsecond(false)
-setRolllock(false)
 setData(msg)
 })
 return () => {
