@@ -17,6 +17,7 @@ function Ludo() {
 const countdownInterval = useRef(null);
 const [timer, setTimer] = useState(20);
 const [rolllock,setRolllock]=useState(false)
+const opponentIntervalRef = useRef(null);
 const triggerInactivity = () => {
     setLoading('Connection issues...');
     socket.disconnect()
@@ -82,24 +83,6 @@ const rolldice = (name) => {
     }, 1000);
   }
 };
-useEffect(() => {
-  if (!rollingfirst || choice !== "Opposition Turn") return;
-
-  const interval = setInterval(() => {
-    setFirstval(Math.floor(Math.random() * 6) + 1);
-  }, 100);
-
-  return () => clearInterval(interval);
-}, [rollingfirst, choice]);
-useEffect(() => {
-  if (!rollingsecond || choice !== "Opposition Turn") return;
-
-  const interval = setInterval(() => {
-    setSecondval(Math.floor(Math.random() * 6) + 1);
-  }, 100);
-
-  return () => clearInterval(interval);
-}, [rollingsecond, choice]);
 const submit=()=>{
   if(message.trim().length != 0){
   socket.emit("join-room",{name:message})
@@ -127,14 +110,22 @@ clearInterval(countdownInterval.current);
  setTimer(0)
 }
 })
-socket.on("show-roll",(msg)=>{
-if(msg.name==msg.players[0].name){
-setRollingfirst(true)
-}
-else{
-setRollingsecond(true)
-}
-})
+socket.on("show-roll", (msg) => {
+  clearInterval(opponentIntervalRef.current);
+  if (msg.name === msg.players[0].name) {
+    setRollingfirst(true);
+    opponentIntervalRef.current = setInterval(() => {
+      setFirstval(Math.floor(Math.random() * 6) + 1);
+    }, 100);
+
+  } else {
+    setRollingsecond(true);
+    opponentIntervalRef.current = setInterval(() => {
+      setSecondval(Math.floor(Math.random() * 6) + 1);
+    }, 100);
+  }
+});
+
 socket.on("result-round",(msg)=>{
 if(msg.game.result!=''){
   clearInterval(countdownInterval.current);
