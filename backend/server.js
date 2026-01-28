@@ -38,7 +38,7 @@ if(rooms[roomID].length<2){
     if(!assignedRoom){
       assignedRoom=uuidv4();
       rooms[assignedRoom]=[]
-      let rand=Math.floor(Math.random()*birds.length)
+      let rand=Math.floor(Math.random()*(birds.length - 1))
       options[assignedRoom]=birds.slice(rand,rand+2)
     }
     rooms[assignedRoom].push({ id: socket.id, name,position:0,move:0,image:options[assignedRoom][rooms[assignedRoom].length]});
