@@ -16,9 +16,10 @@ const rooms={}
 const turn={}
 const game={}
 const count={}
+const options={}
 io.on("connection", (socket) => {
 socket.on('join-room', (msg) => {
-const birds=["Birds/Red.webp","Birds/Chuck.webp"]
+const birds=["Birds/Red.webp","Birds/Blues.webp","Birds/Chuck.webp"]
 const name=msg.name
 let assignedRoom=null;
 for (const roomID in rooms) {
@@ -37,8 +38,10 @@ if(rooms[roomID].length<2){
     if(!assignedRoom){
       assignedRoom=uuidv4();
       rooms[assignedRoom]=[]
+      let rand=Math.floor(Math.random()*birds.length)
+      options[assignedRoom]=birds.slice(rand,rand+2)
     }
-    rooms[assignedRoom].push({ id: socket.id, name,position:0,move:0,image:birds[rooms[assignedRoom].length]});
+    rooms[assignedRoom].push({ id: socket.id, name,position:0,move:0,image:options[assignedRoom][rooms[assignedRoom].length]});
     console.log(rooms[assignedRoom])
     socket.join(assignedRoom);
     console.log(`${name} joined room ${assignedRoom}`);
@@ -128,6 +131,8 @@ if(game[id].result != ""){
   delete rooms[id]
   delete game[id]
   delete turn[id]
+  delete count[id]
+  delete options[id]
   io.in(id).socketsLeave(id);
   return ;
 }
